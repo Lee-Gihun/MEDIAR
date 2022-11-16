@@ -7,7 +7,7 @@ from train_tools.models import *
 
 __all__ = ["PATHS", "TRAINER", "OPTIMIZER", "SCHEDULER"]
 
-# [!Caution] The paths should be overrided for the local environment!
+
 PATHS = {
     "root": "/home/gihun/data/CellSeg/",
     "train_labeled_images": "Official/Train_Labeled/images/",
@@ -17,13 +17,13 @@ PATHS = {
 }
 
 TRAINER = {
-    "baseline": core.Baseline.Trainer,
+    #"baseline": core.Baseline.Trainer,
     "mediar": core.MEDIAR.Trainer,
 }
 
 PREDICTOR = {
-    "baseline": core.Baseline.Predictor,
-    "mediar": core.MEDIAR.PredictorTTA,
+    #"baseline": core.Baseline.Predictor,
+    "mediar": core.MEDIAR.Predictor,
 }
 
 MODELS = {

@@ -1,9 +1,6 @@
 import os, glob
 import json
 
-from SetupDict import PATHS
-
-
 def public_paths_labeled(root):
     images_raw = sorted(glob.glob(os.path.join(root, "Public/images/*")))
     labels_raw = sorted(glob.glob(os.path.join(root, "Public/labels/*")))
@@ -87,7 +84,8 @@ def add_mapping_to_json(json_file, map_dict):
 
 
 if __name__ == "__main__":
-    ROOT = PATHS["root"]
+    # [!Caution] The paths should be overrided for the local environment!
+    ROOT = "/home/gihun/data/CellSeg/"
     MAP_DIR = "./train_tools/data_utils/"
 
     print("\n----------- Path Mapping for Labeled Data is Started... -----------\n")

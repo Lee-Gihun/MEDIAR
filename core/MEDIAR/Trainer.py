@@ -16,8 +16,7 @@ from monai.transforms import (
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))
 
 from core.BaseTrainer import BaseTrainer
-from core.Cellpose.utils import *
-from train_tools.data_utils.custom.cellseg_mix import *
+from core.MEDIAR.utils import *
 
 __all__ = ["Trainer"]
 
@@ -51,9 +50,6 @@ class Trainer(BaseTrainer):
             algo_params,
         )
 
-        # Dice loss as segmentation criterion
-        # originally cellpose use binary classification
-        # mse loss for gradients
         self.criterion1 = nn.MSELoss(reduction="mean")
         self.criterion2 = nn.BCEWithLogitsLoss(reduction="mean")
 
