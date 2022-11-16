@@ -17,12 +17,12 @@ PATHS = {
 }
 
 TRAINER = {
-    #"baseline": core.Baseline.Trainer,
+    # "baseline": core.Baseline.Trainer,
     "mediar": core.MEDIAR.Trainer,
 }
 
 PREDICTOR = {
-    #"baseline": core.Baseline.Predictor,
+    # "baseline": core.Baseline.Predictor,
     "mediar": core.MEDIAR.Predictor,
 }
 

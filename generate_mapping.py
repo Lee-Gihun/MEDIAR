@@ -1,6 +1,7 @@
 import os, glob
 import json
 
+
 def public_paths_labeled(root):
     images_raw = sorted(glob.glob(os.path.join(root, "Public/images/*")))
     labels_raw = sorted(glob.glob(os.path.join(root, "Public/labels/*")))
