@@ -28,12 +28,12 @@ class Predictor(BasePredictor):
     def _inference(self, img_data):
         pred_mask = sliding_window_inference(
             img_data,
-            256,
+            512,
             4,
             self.model,
-            padding_mode="reflect",
+            padding_mode="constant",
             mode="gaussian",
-            overlap=0.5,
+            overlap=0.6,
         )
 
         return pred_mask

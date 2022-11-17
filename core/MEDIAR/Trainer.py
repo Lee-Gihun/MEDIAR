@@ -160,7 +160,7 @@ class Trainer(BaseTrainer):
                 predictor=self.model,
                 padding_mode="constant",
                 mode="gaussian",
-                overlap=0.6,
+                overlap=0.5,
             )
         else:
             outputs = self.model(images)
