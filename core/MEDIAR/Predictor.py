@@ -42,7 +42,7 @@ class Predictor(BasePredictor):
         outputs_base = outputs_base.cpu().squeeze()
         img_base.cpu()
 
-        if not self.algo_params.use_tta:
+        if not self.use_tta:
             pred_mask = outputs_base
             return pred_mask
 
@@ -73,12 +73,12 @@ class Predictor(BasePredictor):
         """Inference on RoI-sized window"""
         outputs = sliding_window_inference(
             img_data,
-            roi_size=self.algo_params.roi_size,
-            sw_batch_size=self.algo_params.sw_batch_size,
+            roi_size=512,
+            sw_batch_size=4,
             predictor=self.model,
-            padding_mode=self.algo_params.padding_mode,
-            mode=self.algo_params.mode,
-            overlap=self.algo_params.overlap,
+            padding_mode="constant",
+            mode="gaussian",
+            overlap=0.6,
         )
 
         return outputs

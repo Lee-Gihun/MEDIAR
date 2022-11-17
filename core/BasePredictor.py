@@ -65,7 +65,7 @@ class BasePredictor:
         print(f"\n Total Time Cost: {total_time:.2f}s")
 
         if self.make_submission:
-            fname = "osilab_%s.zip" % self.exp_name
+            fname = "%s.zip" % self.exp_name
 
             os.makedirs("./submissions", exist_ok=True)
             submission_path = os.path.join("./submissions", fname)
