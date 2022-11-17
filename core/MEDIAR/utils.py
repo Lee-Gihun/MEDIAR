@@ -94,6 +94,10 @@ def compute_masks(
             mask = remove_bad_flow_masks(
                 mask, dP, threshold=flow_threshold, use_gpu=use_gpu, device=device
             )
+        else:  # nothing to compute, just make it compatible
+            shape = resize if resize is not None else cellprob.shape
+            mask = np.zeros(shape, np.uint16)
+            p = np.zeros((len(shape), *shape), np.uint16)
 
     return mask, p
 
