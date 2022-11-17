@@ -9,12 +9,12 @@ from train_tools.models import *
 __all__ = ["TRAINER", "OPTIMIZER", "SCHEDULER"]
 
 TRAINER = {
-    # "baseline": core.Baseline.Trainer,
+    "baseline": core.Baseline.Trainer,
     "mediar": core.MEDIAR.Trainer,
 }
 
 PREDICTOR = {
-    # "baseline": core.Baseline.Predictor,
+    "baseline": core.Baseline.Predictor,
     "mediar": core.MEDIAR.Predictor,
 }
 

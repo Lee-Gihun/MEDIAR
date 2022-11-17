@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from tqdm import tqdm
-from monai.metrics import CumulativeAverage
+from monai.metrics import CumulativeAverage, DiceMetric
 from monai.inferers import sliding_window_inference
 
 import os, sys
@@ -50,8 +50,12 @@ class BaseTrainer:
         # Assign algoritm-specific arguments
         self.__dict__.update((k, v) for k, v in algo_params.items())
 
-        # Cumulative statistics
+        # Cumulitive statistics
         self.loss_metric = CumulativeAverage()
+        self.f1_metric = CumulativeAverage()
+        self.score_metric = DiceMetric(
+            include_background=False, reduction="mean", get_not_nans=False
+        )
 
     def train(self):
         """Train the model"""

@@ -168,7 +168,7 @@ def get_dataloaders_public(
 
 def get_dataloaders_unlabeled(
     root,
-    mapping_file=UNLABELED_JSON_FILE,
+    mapping_file,
     map_keys="all",
     batch_size=8,
     shuffle=True,
@@ -198,7 +198,7 @@ def get_dataloaders_unlabeled(
 
 def get_dataloaders_unlabeled_psuedo(
     root,
-    mapping_file=UNLABELED_JSON_FILE,
+    mapping_file,
     map_keys="all",
     batch_size=8,
     shuffle=True,
