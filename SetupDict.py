@@ -1,20 +1,12 @@
 import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 import monai
+
 import core
 from train_tools import models
 from train_tools.models import *
 
-__all__ = ["PATHS", "TRAINER", "OPTIMIZER", "SCHEDULER"]
-
-
-PATHS = {
-    "root": "/home/gihun/data/CellSeg/",
-    "train_labeled_images": "Official/Train_Labeled/images/",
-    "train_labeled_labels": "Official/Train_Labeled/labels/",
-    "train_unlabeled_images": "Official/Train_Unlabeled/images/",
-    "tuning_images": "Official/TuningSet",
-}
+__all__ = ["TRAINER", "OPTIMIZER", "SCHEDULER"]
 
 TRAINER = {
     # "baseline": core.Baseline.Trainer,

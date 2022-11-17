@@ -4,8 +4,8 @@ import os, sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))
 
-from train_tools.smp import MAnet
-from train_tools.smp.base.modules import Activation
+from segmentation_models_pytorch import MAnet
+from segmentation_models_pytorch.base.modules import Activation
 
 __all__ = ["MEDIARFormer"]
 

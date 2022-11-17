@@ -1,12 +1,12 @@
 from torch import nn
 from typing import Optional
 
-from smp.base import (
+from segmentation_models_pytorch.base import (
     SegmentationModel,
     SegmentationHead,
     ClassificationHead,
 )
-from smp.encoders import get_encoder
+from segmentation_models_pytorch.encoders import get_encoder
 from .decoder import DeepLabV3Decoder, DeepLabV3PlusDecoder
 
 

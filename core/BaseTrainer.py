@@ -71,7 +71,7 @@ class BaseTrainer:
             if self.scheduler is not None:
                 self.scheduler.step()
 
-            if (epoch == 1) or (epoch % self.valid_frequency == 0):
+            if epoch % self.valid_frequency == 0:
                 if not self.no_valid:
                     # Valid Epoch Phase
                     print(">>> Valid Epoch")
@@ -141,10 +141,10 @@ class BaseTrainer:
 
     @torch.no_grad()
     def _tuningset_evaluation(self):
-        cell_counts, cell_counts_total = [], []
+        cell_counts_total = []
         self.model.eval()
 
-        for i, batch_data in enumerate(tqdm(self.dataloaders["tuning"])):
+        for batch_data in tqdm(self.dataloaders["tuning"]):
             images = batch_data["img"].to(self.device)
             if images.shape[-1] > 5000:
                 continue
@@ -163,11 +163,10 @@ class BaseTrainer:
             count = len(np.unique(outputs) - 1)
             cell_counts_total.append(count)
 
-        cell_counts_sum = np.sum(cell_counts)
         cell_counts_total_sum = np.sum(cell_counts_total)
-        print("Cell Counts on FU: (%d)" % (cell_counts_total_sum))
+        print("Cell Counts Total: (%d)" % (cell_counts_total_sum))
 
-        return cell_counts_sum
+        return cell_counts_total_sum
 
     def _update_results(self, phase_results, metric, metric_key, phase="train"):
         """Aggregate and flush metrics

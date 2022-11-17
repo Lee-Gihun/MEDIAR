@@ -1,15 +1,9 @@
 from torch.utils.data import DataLoader
 from monai.data import Dataset
+import pickle
 
 from .transforms import *
 from .utils import *
-
-import pickle
-
-LABELED_JSON_FILE = "./mapping_labeled.json"
-UNLABELED_JSON_FILE = "./mapping_unlabeled.json"
-TUNING_JSON_FILE = "./mapping_tuning.json"
-PUBLIC_JSON_FILE = "./mapping_public.json"
 
 DATA_LABEL_DICT_PICKLE_FILE = "./train_tools/data_utils/custom/modalities.pkl"
 

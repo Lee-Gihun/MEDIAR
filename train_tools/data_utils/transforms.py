@@ -13,7 +13,6 @@ train_transforms = Compose(
     [
         # >>> Load and refine data --- img: (H, W, 3); label: (H, W)
         CustomLoadImaged(keys=["img", "label"]),
-        # BoundaryExclusion(keys=["label"]),
         CustomNormalizeImaged(
             keys=["img"],
             allow_missing_keys=True,
