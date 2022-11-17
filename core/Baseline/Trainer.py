@@ -68,7 +68,7 @@ class Trainer(BaseTrainer):
 
     def _epoch_phase(self, phase):
         """Learning process for 1 Epoch."""
-        
+
         phase_results = {}
 
         # Set model mode
@@ -124,7 +124,7 @@ class Trainer(BaseTrainer):
         labels_onehot = [self.post_gt(i) for i in decollate_batch(labels_onehot)]
 
         return outputs, labels_onehot
-    
+
     def _get_f1_metric(self, masks_pred, masks_true):
         masks_pred = identify_instances_from_classmap(masks_pred)
         masks_true = masks_true.squeeze(0).squeeze(0).cpu().numpy()

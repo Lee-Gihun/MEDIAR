@@ -167,12 +167,7 @@ def get_dataloaders_public(
 
 
 def get_dataloaders_unlabeled(
-    root,
-    mapping_file,
-    map_keys="all",
-    batch_size=8,
-    shuffle=True,
-    num_workers=5,
+    root, mapping_file, map_keys="all", batch_size=8, shuffle=True, num_workers=5,
 ):
     """Set dataloaders for unlabeled dataset."""
     # Get list of data dictionaries from decoded paths
@@ -197,12 +192,7 @@ def get_dataloaders_unlabeled(
 
 
 def get_dataloaders_unlabeled_psuedo(
-    root,
-    mapping_file,
-    map_keys="all",
-    batch_size=8,
-    shuffle=True,
-    num_workers=5,
+    root, mapping_file, map_keys="all", batch_size=8, shuffle=True, num_workers=5,
 ):
 
     # Get list of data dictionaries from decoded paths
