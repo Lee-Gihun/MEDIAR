@@ -1,0 +1,74 @@
+{
+    "data_setups":{
+        "labeled":{
+            "root": "/home/gihun/data/CellSeg/",
+            "mapping_file": "./train_tools/data_utils/mapping_labeled.json",
+            "map_keys": "all",
+            "amplified": true,
+            "batch_size": 8, 
+            "valid_portion": 0
+        },
+        "unlabeled":{
+            "img_only": false,
+            "use_psuedo": false,
+            "params":{
+                "root": "/home/gihun/data/CellSeg/",
+                "mapping_file": "./train_tools/data_utils/mapping_unlabeled_psuedo.json",
+                "map_keys": "all",
+                "batch_size": 2
+            }
+        },
+        "public":{
+            "enabled": true,
+            "params":{
+                "root": "/home/gihun/data/CellSeg/",
+                "mapping_file": "./train_tools/data_utils/mapping_public.json",
+                "map_keys": "all",
+                "batch_size": 1,
+                "use_train_transforms": false
+            }
+        }        
+    },
+    "train_setups":{
+        "model":{
+            "name": "mediar-former",
+            "params": {},
+            "pretrained":{
+                "enabled": false,
+                "strict": true,
+                "weights": "./wandb/run-20221016_175205-2cej4bs2/files/model_80.pth"
+            }
+        },
+        "trainer": {
+            "name": "mediar",
+            "params": {            
+                "num_epochs": 400,
+                "valid_frequency": 1,
+                "device": "cuda:3",
+                "amp": true,
+                "algo_params": {"with_public": false}
+            }
+        },
+        "optimizer":{
+            "name": "adamw",
+            "params": {"lr": 2e-5}
+        },
+        "scheduler":{
+            "enabled": true,
+            "name": "cosine",
+            "params": {"T_max": 100, "eta_min": 1e-7}
+        },
+        "seed": 19940817
+    },
+    "pred_setups":{
+        "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
+        "output_path": "./test",
+        "make_submission": true
+    },
+    "wandb_setups":{
+        "project": "CellSeg",
+        "group": "Refactor",
+        "save_code": false,
+        "name": "mediar"
+    }
+}
