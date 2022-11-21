@@ -1,0 +1,17 @@
+{
+    "pred_setups":{
+        "name": "medair",
+        "input_path":"input_path",
+        "output_path": "./test",
+        "make_submission": true,
+        "model_path": "model_path",
+        "device": "cuda:0",
+        "model":{
+            "name": "mediar-former",
+            "params": {},
+            "pretrained":{
+                "enabled": false
+            }
+        }
+    }
+}

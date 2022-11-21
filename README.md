@@ -10,8 +10,6 @@ The above figure illurstrate our framework, <b>*MEDIAR*</b>. MEDIAR harmonizes d
 
 # 2. Methods
 
-**1안**
-
 ## **Data-Centric**
 1. **Cell Aware Augmentation** : We apply two novel cell-aware augmentations. Since the intensity of the cells in the image could differ, *cell-wisely intensity is randomized* (Cell Intensity Diversification). we *excluded the boundary pixels* in the label. The boundary exclusion is adopted only in the pre-training phase.
 
@@ -34,15 +32,6 @@ labels.
 
 2. **Gradient Flow Tracking** : We utilize gradient flow tracking proposed by [CellPose](https://github.com/MouseLand/cellpose). Using the ground-truth cell masks drawn by a human annotator, we produced topological maps through a process of simulated diffusion. Then, MEDIAR-Former was trained to predict the horizontal and vertical gradients of the topological maps, as well as a binary map indicating whether or not a given pixel is cell or not. MEDIAR-Former predicted the vector fields formed by the horizontal and vertical gradients. All pixels belonging to a given cell can be routed to its center by following the vector fields through a process known as gradient tracking. Thus, by grouping pixels that converge on the same point, we recover the precise shapes of individual cells. The cell shapes were refined further by removing pixels that the neural network predicted to be outside of cells.
 
-
-**2안**
-
-### **pre-processing(cellpose)**
--  In pre-processing, we changed our labels to 1. binary labels, 2. sptial image gradient fields. We follow the [CellPose](https://github.com/MouseLand/cellpose)
-### **post-processing(cellpose)**
-### **Pre-training**
-### **Tranining**
-
 # 3. Experiments
 
 ### **Dataset**
@@ -54,6 +43,11 @@ labels.
   - CellPose : 608 images and labels containing about 70000 cells collected via internet searches for keywords such as cytoplasm, cellular microscopy, fluorescent cells and so on.
   - LiveCell : 5239 images containisng 1686352 individual cells that annotated by trained crowd sourcers from 8 distinct cell types. The dataset is splitted to 3188 training set, 539 validation set and 1512 test set.
   - DataScienceBowl 2018 : 841 images containing 37333 cells that annotated by a single expert and examined by the rest from 22 cell types, 15 image resolutions and five groups of visually similar images
+
+### **Testing steps**
+- **Ensemble Prediction with TTA** :  MEDIAR uses sliding-window inference with the overlap size between the adjacent patches as 0.6 and gaussian importance map. To predict the different views on the image, MEDIAR uses Test-Time Augmentation (TTA) for the model prediction and ensemble two models described in **Two-phase Pretraining and Fine-tuning**.
+
+- **Inference time** : MEDIAR conducts most images in less than 1sec and it depends on the image size and the number of cells, even with ensemble prediction with TTA. Detailed evaluation-time results are in the paper.  
 
 ### **Augmentations**
 | Strategy  |      Class      |  Probability |
@@ -72,20 +66,23 @@ labels.
 | `Histogram Shift` |  Intensity Augmentation | 0.25 |
 | `Gaussian Sharpening` |  Intensity Augmentation | 0.25 |
 | `Boundary Exclusion` | Others | . |
-### **Testing steps**
-- **Ensemble Prediction with TTA** :  MEDIAR uses sliding-window inference with the overlap size between the adjacent patches as 0.6 and gaussian importance map. To predict the different views on the image, MEDIAR uses Test-Time Augmentation (TTA) for the model prediction and ensemble two models described in **Two-phase Pretraining and Fine-tuning**.
 
-- Inference time
 
-### **Training protocols**
-- computing infrastructure (e.g., GPU name, number, memory)
-- patch size and patch sampling strategy
-- batch size
-- optimizer, learning rate and its decay schedule 
-- loss function 
-- data augmentation methods
-- stopping criteria, and optimal model selection criteria
-- training time
+| Learning Setups                                             | Pretraining                                    | Fine-tuning                                    |
+|----------------------------------------------------------------------|---------------------------------------------------------|---------------------------------------------------------|
+| Initialization (Encoder)                                             | Imagenet-1k pretrained                                  | pretrained                                              |
+| Initialization (Decoder, Head)                                            |            He normal initialization                                        | pretrained |
+| Batch size                                                           | 9                                                       | 9                                                       |
+| Total epochs                                                         | 80                                                      | 200                                                      |
+| Optimizer                                                            | AdamW                                     | AdamW                                     |
+| Initial learning rate (lr)                                           | 5e-5                                                    | 2e-5                                                    |
+| Lr decay schedule                                                    | Cosine scheduler (100 interval) | Cosine scheduler (100 interval) |
+| Training time                                                        | 72 hours                                                | 48 hours                                                |
+| Loss function                                                        | MSE, Binary cross entropy                               | MSE, Binary cross entropy                               |
+| Number of model parameters | 121.31 M                                                | 121.31 M                                                |
+| Number of flops| 204.26 G                                                | 204.26 G                                                |
+| $\text{C{O}}_{2}eq$ | 15.105g                                                 | 9.876g                                                  |
+
 
 # 4. Results
 
@@ -99,12 +96,18 @@ labels.
 
 # 5. Reproducing
 
-## Environments and Requirements
-
-- Windows/Ubuntu version
-- CPU, RAM, GPU information
-- CUDA version
-- python version
+### **Our Environment**
+| Computing Infrastructure| |
+|-------------------------|----------------------------------------------------------------------|
+| System                  | Ubuntu 18.04.5 LTS                                                   |
+| CPU                     | AMD EPYC 7543 32-Core Processor CPU@2.26GHz                          |
+| RAM                     | 500GB; 3.125MT/s                                                     |
+| GPU (number and type)   | NVIDIA A5000 (24GB) 2ea                                              |
+| CUDA version            | 11.7                                                                 |
+| Programming language    | Python 3.9                                                           |
+| Deep learning framework | Pytorch (v1.12, with torchvision v0.13.1)             |
+| Code dependencies       | MONAI (v0.9.0), Segmentation Models (v0.3.0) |
+| Specific dependencies   | None                                                                 |
 
 To install requirements:
 
@@ -112,25 +115,16 @@ To install requirements:
 pip install -r requirements.txt
 ```
 
-## Configs
-
 ## Dataset
 
-- A link to download the data (if publicly available)
-- A description about how to prepare the data (e.g., folder structures)
+- We are provided the target datasets from the challenge organizers and the public datsets from -, -, -, -
 
-## Preprocessing
+## Data Mapping
 
-A brief description of preprocessing method
-
-- cropping
-- intensity normalization
-- resampling
-
-Running the data preprocessing code:
+Before execute the codes, run the data mapping code:
 
 ```python
-python preprocessing.py --input_path <path_to_input_data> --output_path <path_to_output_data>
+python generate_mapping.py --root=<path_to_data>
 ```
 
 ## Training
@@ -138,12 +132,17 @@ python preprocessing.py --input_path <path_to_input_data> --output_path <path_to
 To train the model(s) in the paper, run this command:
 
 ```train
-python train.py --input-data <path_to_data> --alpha 10 --beta 20
+python main.py --config_path=<path_to_config>
 ```
+Configuration files are in `config`
 
->Describe how to train the models, with example commands, including the full training procedure and appropriate hyper-parameters.
+## Inference
 
+To infer the testing cases, run this command:
 
+```python
+python predict.py --config_path=<path_to_config>
+```
 
 ## Trained Models
 
@@ -151,16 +150,3 @@ You can download trained models here:
 
 - [My awesome model](https://drive.google.com/mymodel.pth) trained on the above dataset with the above code. 
 
->Give a link to where/how the trained models can be downloaded.
-
-
-
-## Inference
-
-To infer the testing cases, run this command:
-
-```python
-python inference.py --input-data <path_to_data> --model_path <path_to_trained_model> --output_path <path_to_output_data>
-```
-
-> Describe how to infer on testing cases with the trained models.
