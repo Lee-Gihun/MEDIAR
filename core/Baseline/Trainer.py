@@ -68,12 +68,11 @@ class Trainer(BaseTrainer):
                 outputs = self._inference(images, phase)
                 loss = self.criterion(outputs, labels_onehot)
                 self.loss_metric.append(loss)
-                
+
                 if phase != "train":
-                    outputs, labels = self._post_process(outputs, labels)
                     f1_score = self._get_f1_metric(outputs, labels)
                     self.f1_metric.append(f1_score)
-                    
+
             # Backward pass
             if phase == "train":
                 if self.amp:
@@ -85,17 +84,17 @@ class Trainer(BaseTrainer):
                 else:
                     loss.backward()
                     self.optimizer.step()
-                    
+
         # Update metrics
         phase_results = self._update_results(
             phase_results, self.loss_metric, "loss", phase
         )
-        
+
         if phase != "train":
             phase_results = self._update_results(
                 phase_results, self.f1_metric, "f1_score", phase
             )
-            
+
         return phase_results
 
     def _post_process(self, outputs, labels_onehot):
@@ -106,7 +105,7 @@ class Trainer(BaseTrainer):
         return outputs, labels_onehot
 
     def _get_f1_metric(self, masks_pred, masks_true):
-        masks_pred = identify_instances_from_classmap(masks_pred)
+        masks_pred = identify_instances_from_classmap(masks_pred[0])
         masks_true = masks_true.squeeze(0).squeeze(0).cpu().numpy()
         f1_score = evaluate_f1_score_cellseg(masks_true, masks_pred)[-1]
 

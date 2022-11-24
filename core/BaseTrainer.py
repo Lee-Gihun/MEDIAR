@@ -59,7 +59,6 @@ class BaseTrainer:
         self.loss_metric = CumulativeAverage()
         self.f1_metric = CumulativeAverage()
 
-
         # Post-processing functions
         self.post_pred = Compose(
             [EnsureType(), Activations(softmax=True), AsDiscrete(threshold=0.5)]
