@@ -45,6 +45,7 @@ class Predictor(BasePredictor):
         return pred_mask
 
     def _post_process(self, pred_mask):
+        pred_mask = torch.from_numpy(pred_mask)
         pred_mask = torch.softmax(pred_mask, dim=0)
         pred_mask = pred_mask[1].cpu().numpy()
 

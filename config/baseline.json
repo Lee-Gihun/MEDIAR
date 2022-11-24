@@ -30,9 +30,9 @@
         "trainer": {
             "name": "baseline",
             "params": {            
-                "num_epochs": 1,
+                "num_epochs": 200,
                 "valid_frequency": 1,
-                "device": "cuda:3",
+                "device": "cuda:2",
                 "algo_params": {}
             }
         },
@@ -49,6 +49,7 @@
         "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
         "output_path": "./results/baseline",
         "make_submission": true,
+        "exp_name": "baseline",
         "algo_params": {}
     },
     "wandb_setups":{
