@@ -32,7 +32,9 @@ def main(args):
 
 # Parser arguments for terminal execution
 parser = argparse.ArgumentParser(description="Config file processing")
-parser.add_argument("--config_path", default="./config/pred/baseline.json", type=str)
+parser.add_argument(
+    "--config_path", default="./config/step3_prediction/base_prediction.json", type=str
+)
 args = parser.parse_args()
 
 #######################################################################################

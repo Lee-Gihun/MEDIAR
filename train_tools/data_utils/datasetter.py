@@ -2,7 +2,13 @@ from torch.utils.data import DataLoader
 from monai.data import Dataset
 import pickle
 
-from .transforms import train_transforms, public_transforms, valid_transforms, tuning_transforms, unlabeled_transforms
+from .transforms import (
+    train_transforms,
+    public_transforms,
+    valid_transforms,
+    tuning_transforms,
+    unlabeled_transforms,
+)
 from .utils import split_train_valid, path_decoder
 
 DATA_LABEL_DICT_PICKLE_FILE = "./train_tools/data_utils/custom/modalities.pkl"
@@ -42,8 +48,6 @@ def get_dataloaders_labeled(
     data_dicts = path_decoder(root, mapping_file)
     tuning_dicts = path_decoder(root, mapping_file_tuning, no_label=True)
 
-    print(train_transforms)
-
     if amplified:
         with open(DATA_LABEL_DICT_PICKLE_FILE, "rb") as f:
             data_label_dict = pickle.load(f)
@@ -69,11 +73,13 @@ def get_dataloaders_labeled(
             else:
                 for i in range(50):
                     data_dicts.append(data_points[i % len_data_points])
-                                      
+
+    data_transforms = train_transforms
+
     if join_mapping_file is not None:
         data_dicts += path_decoder(root, join_mapping_file)
-        train_transforms = public_transforms
-        
+        data_transforms = public_transforms
+
     if relabel:
         for elem in data_dicts:
             cell_idx = int(elem["label"].split("_label.tiff")[0].split("_")[-1])
@@ -90,7 +96,7 @@ def get_dataloaders_labeled(
     )
 
     # Obtain datasets with transforms
-    trainset = Dataset(train_dicts, transform=train_transforms)
+    trainset = Dataset(train_dicts, transform=data_transforms)
     validset = Dataset(valid_dicts, transform=valid_transforms)
     tuningset = Dataset(tuning_dicts, transform=tuning_transforms)
 
@@ -116,10 +122,7 @@ def get_dataloaders_labeled(
 
 
 def get_dataloaders_public(
-    root,
-    mapping_file,
-    valid_portion=0.0,
-    batch_size=8,
+    root, mapping_file, valid_portion=0.0, batch_size=8,
 ):
     """Set DataLoaders for labeled datasets.
 
@@ -138,9 +141,7 @@ def get_dataloaders_public(
     data_dicts = path_decoder(root, mapping_file)
 
     # Split datasets as Train/Valid
-    train_dicts, _ = split_train_valid(
-        data_dicts, valid_portion=valid_portion
-    )
+    train_dicts, _ = split_train_valid(data_dicts, valid_portion=valid_portion)
 
     trainset = Dataset(train_dicts, transform=public_transforms)
     # Set dataloader for Trainset
