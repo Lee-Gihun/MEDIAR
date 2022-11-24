@@ -163,7 +163,7 @@ class Trainer(BaseTrainer):
         outputs = outputs.squeeze(0).cpu().numpy()
         gradflows, cellprob = outputs[:2], self._sigmoid(outputs[-1])
         outputs = compute_masks(gradflows, cellprob, use_gpu=True, device=self.device)
-        outputs = outputs[0] # (1, C, H, W) -> (C, H, W)
+        outputs = outputs[0]  # (1, C, H, W) -> (C, H, W)
 
         if labels is not None:
             labels = labels.squeeze(0).squeeze(0).cpu().numpy()

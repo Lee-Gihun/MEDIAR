@@ -59,6 +59,7 @@ public_transforms = Compose(
         AsChannelFirstd(keys=["img", "label"], channel_dim=-1),
         RemoveRepeatedChanneld(keys=["label"], repeats=3),  # label: (H, W)
         ScaleIntensityd(keys=["img"], allow_missing_keys=True),  # Do not scale label
+        # >>> Spatial transforms
         SpatialPadd(keys=["img", "label"], spatial_size=512),
         RandSpatialCropd(keys=["img", "label"], roi_size=512, random_size=False),
         RandAxisFlipd(keys=["img", "label"], prob=0.5),
@@ -119,6 +120,7 @@ unlabeled_transforms = Compose(
             keep_size=False,
         ),
         ScaleIntensityd(keys=["img"], allow_missing_keys=True),  # Do not scale label
+        # >>> Spatial transforms
         SpatialPadd(keys=["img"], spatial_size=512),
         RandSpatialCropd(keys=["img"], roi_size=512, random_size=False),
         EnsureTyped(keys=["img"]),
@@ -127,6 +129,7 @@ unlabeled_transforms = Compose(
 
 
 def get_pred_transforms():
+    """Prediction preprocessing"""
     pred_transforms = Compose(
         [
             # >>> Load and refine data

@@ -167,9 +167,7 @@ def get_dataloaders_unlabeled(
 ):
     """Set dataloaders for unlabeled dataset."""
     # Get list of data dictionaries from decoded paths
-    unlabeled_dicts = path_decoder(
-        root, mapping_file, no_label=True, unlabeled=True
-    )
+    unlabeled_dicts = path_decoder(root, mapping_file, no_label=True, unlabeled=True)
 
     # Obtain datasets with transforms
     unlabeled_dicts, _ = split_train_valid(unlabeled_dicts, valid_portion=0)

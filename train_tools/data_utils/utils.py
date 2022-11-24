@@ -39,7 +39,6 @@ def path_decoder(root, mapping_file, no_label=False, unlabeled=False):
     Args:
         root (str):
         mapping_file (str): json file containing image & label file paths.
-        map_keys (list or str, optional): list of using dataset names. Defaults to "all".
         no_label (bool, optional): whether to include "label" key. Defaults to False.
 
     Returns:
