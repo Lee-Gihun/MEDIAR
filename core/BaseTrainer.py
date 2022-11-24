@@ -96,10 +96,6 @@ class BaseTrainer:
 
             print("-" * 50)
 
-            torch.save(
-                self.model.state_dict(),
-                os.path.join(wandb.run.dir, f"model_{epoch}.pth"),
-            )
             self.best_f1_score = 0
 
         if self.best_weights is not None:

@@ -35,7 +35,7 @@ train_transforms = Compose(
         RandSpatialCropd(keys=["img", "label"], roi_size=512, random_size=False),
         RandAxisFlipd(keys=["img", "label"], prob=0.5),
         RandRotate90d(keys=["img", "label"], prob=0.5, spatial_axes=[0, 1]),
-        # CellScaleIntensity(keys=["img", "label"], allow_missing_keys=True),
+        IntensityDiversification(keys=["img", "label"], allow_missing_keys=True),
         # # >>> Intensity transforms
         RandGaussianNoised(keys=["img"], prob=0.25, mean=0, std=0.1),
         RandAdjustContrastd(keys=["img"], prob=0.25, gamma=(1, 2)),
