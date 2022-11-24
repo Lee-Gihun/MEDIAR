@@ -1,6 +1,6 @@
 import os, glob
 import json
-
+import argparse
 
 def public_paths_labeled(root):
     images_raw = sorted(glob.glob(os.path.join(root, "Public/images/*")))
@@ -86,25 +86,28 @@ def add_mapping_to_json(json_file, map_dict):
 
 if __name__ == "__main__":
     # [!Caution] The paths should be overrided for the local environment!
-    ROOT = "/home/gihun/data/CellSeg/"
+    parser = argparse.ArgumentParser(description="Mapping files and paths")
+    parser.add_argument("--root", default=".", type=str)
+    args = parser.parse_args()
+
     MAP_DIR = "./train_tools/data_utils/"
 
     print("\n----------- Path Mapping for Labeled Data is Started... -----------\n")
 
     map_labeled = os.path.join(MAP_DIR, "mapping_labeled.json")
-    map_dict = official_paths_labeled(ROOT)
+    map_dict = official_paths_labeled(args.root)
     add_mapping_to_json(map_labeled, map_dict)
 
     print("\n----------- Path Mapping for Tuning Data is Started... -----------\n")
 
     map_labeled = os.path.join(MAP_DIR, "mapping_tuning.json")
-    map_dict = official_paths_tuning(ROOT)
+    map_dict = official_paths_tuning(args.root)
     add_mapping_to_json(map_labeled, map_dict)
 
     print("\n----------- Path Mapping for Public Data is Started... -----------\n")
 
     map_public = os.path.join(MAP_DIR, "mapping_public.json")
-    map_dict = public_paths_labeled(ROOT)
+    map_dict = public_paths_labeled(args.root)
     add_mapping_to_json(map_public, map_dict)
 
     print("\n-------------- Path Mapping is Ended !!! ---------------------------\n")
