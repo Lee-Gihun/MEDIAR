@@ -4,8 +4,8 @@
         "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
         "output_path": "./results/mediar_base_prediction",
         "make_submission": true,
-        "model_path": "/home/gihun/MEDIAR/weights/finetuned/from_phase1.pth",
-        "device": "cuda:2",
+        "model_path": "./weights/finetuned/from_phase1.pth",
+        "device": "cuda:0",
         "model":{
             "name": "mediar-former",
             "params": {

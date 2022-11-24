@@ -2,10 +2,11 @@
     "pred_setups":{
         "name": "mediar",
         "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
-        "output_path": "./mediar_ensemble_tta",
+        "output_path": "./results/mediar_ensemble_tta",
         "make_submission": true,
-        "model_path": "./weights/finetuned/from_phase1.pth",
-        "device": "cuda:2",
+        "model_path1": "./weights/finetuned/from_phase1.pth",
+        "model_path2": "./weights/finetuned/from_phase2.pth",
+        "device": "cuda:0",
         "model":{
             "name": "mediar-former",
             "params": {

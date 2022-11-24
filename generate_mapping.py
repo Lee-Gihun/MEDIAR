@@ -4,6 +4,8 @@ import argparse
 
 
 def public_paths_labeled(root):
+    """Map paths for public datasets as dictionary list"""
+
     images_raw = sorted(glob.glob(os.path.join(root, "Public/images/*")))
     labels_raw = sorted(glob.glob(os.path.join(root, "Public/labels/*")))
 
@@ -27,6 +29,8 @@ def public_paths_labeled(root):
 
 
 def official_paths_labeled(root):
+    """Map paths for official labeled datasets as dictionary list"""
+
     image_path = os.path.join(root, "Official/Train_Labeled/images/*")
     label_path = os.path.join(root, "Official/Train_Labeled/labels/*")
 
@@ -53,6 +57,8 @@ def official_paths_labeled(root):
 
 
 def official_paths_tuning(root):
+    """Map paths for official tuning datasets as dictionary list"""
+
     image_path = os.path.join(root, "Official/TuningSet/*")
     images_raw = sorted(glob.glob(image_path))
 
@@ -68,6 +74,8 @@ def official_paths_tuning(root):
 
 
 def add_mapping_to_json(json_file, map_dict):
+    """Save mapped dictionary as a json file"""
+
     if not os.path.exists(json_file):
         with open(json_file, "w") as file:
             json.dump({}, file)

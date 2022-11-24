@@ -9,7 +9,7 @@ torch.set_printoptions(6)
 
 
 def main(args):
-    """Execute experiment."""
+    """Execute prediction and save the results"""
 
     model_args = args.pred_setups.model
     model = MODELS[model_args.name](**model_args.params)

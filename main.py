@@ -55,6 +55,7 @@ def _get_setups(args):
     if args.data_setups.labeled.valid_portion == 0:
         trainer.no_valid = True
 
+    # Set public dataloader
     if args.data_setups.public.enabled:
         dataloaders = datasetter.get_dataloaders_public(
             **args.data_setups.public.params
@@ -91,6 +92,7 @@ def main(args):
     torch.save(trainer.model.state_dict(), model_path)
     wandb.save(model_path)
 
+    # Conduct prediction using the trained model
     predictor = PREDICTOR[args.train_setups.trainer.name](
         trainer.model,
         args.train_setups.trainer.params.device,
@@ -101,7 +103,6 @@ def main(args):
         args.pred_setups.algo_params,
     )
 
-    # Conduct prediction on validation Set
     total_time = predictor.conduct_prediction()
     wandb.log({"total_time": total_time})
 

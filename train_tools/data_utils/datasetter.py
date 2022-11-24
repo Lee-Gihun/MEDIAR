@@ -23,8 +23,8 @@ __all__ = [
 def get_dataloaders_labeled(
     root,
     mapping_file,
+    mapping_file_tuning,
     join_mapping_file=None,
-    mapping_file_tuning="/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
     valid_portion=0.0,
     batch_size=8,
     amplified=False,

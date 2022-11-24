@@ -3,6 +3,7 @@
         "labeled":{
             "root": "/home/gihun/data/CellSeg/",
             "mapping_file": "./train_tools/data_utils/mapping_labeled.json",
+            "tuning_mapping_file": "/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
             "batch_size": 8, 
             "valid_portion": 0.1
         },
@@ -31,7 +32,7 @@
             "params": {            
                 "num_epochs": 200,
                 "valid_frequency": 1,
-                "device": "cuda:2",
+                "device": "cuda:0",
                 "algo_params": {}
             }
         },
