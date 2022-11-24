@@ -5,13 +5,6 @@ import torch.nn as nn
 import numpy as np
 from tqdm import tqdm
 from monai.inferers import sliding_window_inference
-from monai.metrics import CumulativeAverage, DiceMetric
-from monai.transforms import (
-    Activations,
-    AsDiscrete,
-    Compose,
-    EnsureType,
-)
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))
 
@@ -52,19 +45,6 @@ class Trainer(BaseTrainer):
 
         self.criterion1 = nn.MSELoss(reduction="mean")
         self.criterion2 = nn.BCEWithLogitsLoss(reduction="mean")
-
-        # Post-processing functions
-        self.post_pred = Compose(
-            [EnsureType(), Activations(softmax=True), AsDiscrete(threshold=0.5)]
-        )
-        self.post_gt = Compose([EnsureType(), AsDiscrete(to_onehot=None)])
-
-        # Cumulitive statistics
-        self.loss_metric = CumulativeAverage()
-        self.f1_metric = CumulativeAverage()
-        self.score_metric = DiceMetric(
-            include_background=False, reduction="mean", get_not_nans=False
-        )
 
     def loss_fn(self, lbl, y, device):
         """loss function between true labels lbl and prediction y"""

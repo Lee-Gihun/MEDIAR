@@ -30,9 +30,9 @@
         "trainer": {
             "name": "baseline",
             "params": {            
-                "num_epochs": 100,
+                "num_epochs": 1,
                 "valid_frequency": 1,
-                "device": "cuda:2",
+                "device": "cuda:3",
                 "algo_params": {}
             }
         },

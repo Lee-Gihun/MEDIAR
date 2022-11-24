@@ -20,9 +20,16 @@ class Predictor(BasePredictor):
         output_path,
         make_submission=False,
         exp_name=None,
+        algo_params=None,
     ):
         super(Predictor, self).__init__(
-            model, device, input_path, output_path, make_submission, exp_name
+            model,
+            device,
+            input_path,
+            output_path,
+            make_submission,
+            exp_name,
+            algo_params,
         )
 
     def _inference(self, img_data):

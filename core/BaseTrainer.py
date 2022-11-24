@@ -1,12 +1,17 @@
 import torch
 import numpy as np
 from tqdm import tqdm
-from monai.metrics import CumulativeAverage, DiceMetric
 from monai.inferers import sliding_window_inference
+from monai.metrics import CumulativeAverage
+from monai.transforms import (
+    Activations,
+    AsDiscrete,
+    Compose,
+    EnsureType,
+)
 
 import os, sys
 import copy
-import wandb
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../")))
 
@@ -53,9 +58,13 @@ class BaseTrainer:
         # Cumulitive statistics
         self.loss_metric = CumulativeAverage()
         self.f1_metric = CumulativeAverage()
-        self.score_metric = DiceMetric(
-            include_background=False, reduction="mean", get_not_nans=False
+
+
+        # Post-processing functions
+        self.post_pred = Compose(
+            [EnsureType(), Activations(softmax=True), AsDiscrete(threshold=0.5)]
         )
+        self.post_gt = Compose([EnsureType(), AsDiscrete(to_onehot=None)])
 
     def train(self):
         """Train the model"""
@@ -205,8 +214,22 @@ class BaseTrainer:
         else:
             pass
 
-    def _inference(self, images):
-        return self.model(images)
+    def _inference(self, images, phase="train"):
+        """inference methods for different phase"""
+        if phase != "train":
+            outputs = sliding_window_inference(
+                images,
+                roi_size=512,
+                sw_batch_size=4,
+                predictor=self.model,
+                padding_mode="reflect",
+                mode="gaussian",
+                overlap=0.5,
+            )
+        else:
+            outputs = self.model(images)
+
+        return outputs
 
     def _post_process(self, outputs, labels):
         return outputs, labels

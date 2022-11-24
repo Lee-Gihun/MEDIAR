@@ -1,14 +1,7 @@
 import torch
 import os, sys
 import monai
-from monai.inferers import sliding_window_inference
-from monai.metrics import CumulativeAverage, DiceMetric
-from monai.transforms import (
-    Activations,
-    AsDiscrete,
-    Compose,
-    EnsureType,
-)
+
 from monai.data import decollate_batch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))
@@ -53,19 +46,6 @@ class Trainer(BaseTrainer):
         # Dice loss as segmentation criterion
         self.criterion = monai.losses.DiceCELoss(softmax=True)
 
-        # Post-processing functions
-        self.post_pred = Compose(
-            [EnsureType(), Activations(softmax=True), AsDiscrete(threshold=0.5)]
-        )
-        self.post_gt = Compose([EnsureType(), AsDiscrete(to_onehot=None)])
-
-        # Cumulitive statistics
-        self.loss_metric = CumulativeAverage()
-        self.f1_metric = CumulativeAverage()
-        self.score_metric = DiceMetric(
-            include_background=False, reduction="mean", get_not_nans=False
-        )
-
     def _epoch_phase(self, phase):
         """Learning process for 1 Epoch."""
 
@@ -85,38 +65,38 @@ class Trainer(BaseTrainer):
 
             # Forward pass
             with torch.set_grad_enabled(phase == "train"):
-                outputs = self.model(images)
+                outputs = self._inference(images, phase)
                 loss = self.criterion(outputs, labels_onehot)
                 self.loss_metric.append(loss)
-
+                
+                if phase != "train":
+                    outputs, labels = self._post_process(outputs, labels)
+                    f1_score = self._get_f1_metric(outputs, labels)
+                    self.f1_metric.append(f1_score)
+                    
             # Backward pass
             if phase == "train":
-                loss.backward()
-                self.optimizer.step()
+                if self.amp:
+                    self.scaler.scale(loss).backward()
+                    self.scaler.unscale_(self.optimizer)
+                    self.scaler.step(self.optimizer)
+                    self.scaler.update()
 
+                else:
+                    loss.backward()
+                    self.optimizer.step()
+                    
         # Update metrics
         phase_results = self._update_results(
             phase_results, self.loss_metric, "loss", phase
         )
-
-        return phase_results
-
-    def _inference(self, images, phase="train"):
-        """inference methods for different phase"""
-        if phase == "valid":
-            outputs = sliding_window_inference(
-                images,
-                roi_size=512,
-                sw_batch_size=4,
-                predictor=self.model,
-                padding_mode="reflect",
-                mode="gaussian",
-                overlap=0.5,
+        
+        if phase != "train":
+            phase_results = self._update_results(
+                phase_results, self.f1_metric, "f1_score", phase
             )
-        else:
-            outputs = self.model(images)
-
-        return outputs
+            
+        return phase_results
 
     def _post_process(self, outputs, labels_onehot):
         """Conduct post-processing for outputs & labels."""
