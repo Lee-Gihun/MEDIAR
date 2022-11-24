@@ -46,7 +46,7 @@ class Trainer(BaseTrainer):
         self.mse_loss = nn.MSELoss(reduction="mean")
         self.bce_loss = nn.BCEWithLogitsLoss(reduction="mean")
 
-    def criterion(self, outputs, labels_onehot_flows):
+    def mediar_criterion(self, outputs, labels_onehot_flows):
         """loss function between true labels and prediction outputs"""
 
         # Cell Recognition Loss
@@ -107,7 +107,7 @@ class Trainer(BaseTrainer):
                         labels, use_gpu=True, device=self.device
                     )
                     # Calculate loss
-                    loss = self.criterion(outputs, labels_onehot_flows)
+                    loss = self.mediar_criterion(outputs, labels_onehot_flows)
                     self.loss_metric.append(loss)
 
                     # Calculate valid statistics

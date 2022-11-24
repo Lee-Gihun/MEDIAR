@@ -16,10 +16,10 @@ __all__ = [
 def get_dataloaders_labeled(
     root,
     mapping_file,
+    join_mapping_file=None,
     mapping_file_tuning="/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
     valid_portion=0.0,
     batch_size=8,
-    num_workers=5,
     amplified=False,
     relabel=False,
 ):
@@ -64,12 +64,12 @@ def get_dataloaders_labeled(
             if len_data_points >= 50:
                 data_dicts += data_points
             else:
-                if label == 7:
-                    for i in range(126):
-                        data_dicts.append(data_points[i % len_data_points])
-                else:
-                    for i in range(50):
-                        data_dicts.append(data_points[i % len_data_points])
+                for i in range(50):
+                    data_dicts.append(data_points[i % len_data_points])
+                    
+    if join_mapping_file is not None:
+        data_dicts += path_decoder(root, join_mapping_file)
+        train_transforms = public_transforms
 
     if relabel:
         for elem in data_dicts:
@@ -93,7 +93,7 @@ def get_dataloaders_labeled(
 
     # Set dataloader for Trainset
     train_loader = DataLoader(
-        trainset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        trainset, batch_size=batch_size, shuffle=True, num_workers=5
     )
 
     # Set dataloader for Validset (Batch size is fixed as 1)
@@ -117,8 +117,6 @@ def get_dataloaders_public(
     mapping_file,
     valid_portion=0.0,
     batch_size=8,
-    num_workers=5,
-    use_train_transforms=False,
 ):
     """Set DataLoaders for labeled datasets.
 
@@ -128,7 +126,6 @@ def get_dataloaders_public(
         valid_portion (float, optional): portion of valid datasets. Defaults to 0.1.
         batch_size (int, optional): batch size. Defaults to 8.
         shuffle (bool, optional): shuffles dataloader. Defaults to True.
-        num_workers (int, optional): number of workers for each datalaoder. Defaults to 5.
 
     Returns:
         dict: dictionary of data loaders.
@@ -142,16 +139,10 @@ def get_dataloaders_public(
         data_dicts, valid_portion=valid_portion
     )
 
-    # Obtain datasets with transforms
-    if use_train_transforms:
-        transforms = train_transforms
-    else:
-        transforms = public_transforms
-
-    trainset = Dataset(train_dicts, transform=transforms)
+    trainset = Dataset(train_dicts, transform=public_transforms)
     # Set dataloader for Trainset
     train_loader = DataLoader(
-        trainset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        trainset, batch_size=batch_size, shuffle=True, num_workers=5
     )
 
     # Form dataloaders as dictionary
