@@ -1,8 +1,7 @@
-import os
-import sys
 import torch
 import torch.nn as nn
 import numpy as np
+import os, sys
 from tqdm import tqdm
 from monai.inferers import sliding_window_inference
 
@@ -56,10 +55,8 @@ class Trainer(BaseTrainer):
         )
 
         # Cell Distinction Loss
-        gradient_flows = 5.0 * torch.from_numpy(labels_onehot_flows[:, 2:]).to(
-            self.device
-        )
-        gradflow_loss = 0.5 * self.mse_loss(outputs[:, :2], gradient_flows)
+        gradient_flows = torch.from_numpy(labels_onehot_flows[:, 2:]).to(self.device)
+        gradflow_loss = 0.5 * self.mse_loss(outputs[:, :2], 5.0 * gradient_flows)
 
         loss = cellprob_loss + gradflow_loss
 
