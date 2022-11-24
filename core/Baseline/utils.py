@@ -1,3 +1,9 @@
+"""
+Adapted from the following references:
+[1] https://github.com/JunMa11/NeurIPS-CellSeg/blob/main/baseline/model_training_3class.py
+
+"""
+
 import torch
 import numpy as np
 from skimage import segmentation, morphology, measure

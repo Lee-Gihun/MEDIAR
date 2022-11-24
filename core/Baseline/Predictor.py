@@ -1,6 +1,5 @@
 import torch
 import os, sys
-import numpy as np
 from skimage import morphology, measure
 from monai.inferers import sliding_window_inference
 
@@ -49,7 +48,7 @@ class Predictor(BasePredictor):
         pred_mask = torch.softmax(pred_mask, dim=0)
         pred_mask = pred_mask[1].cpu().numpy()
 
-        # Apply morphological postprocessing
+        # Apply morphological post-processing
         pred_mask = pred_mask > 0.5
         pred_mask = morphology.remove_small_holes(pred_mask, connectivity=1)
         pred_mask = morphology.remove_small_objects(pred_mask, 16)

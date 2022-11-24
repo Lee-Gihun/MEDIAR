@@ -43,19 +43,26 @@ class Trainer(BaseTrainer):
             algo_params,
         )
 
-        self.criterion1 = nn.MSELoss(reduction="mean")
-        self.criterion2 = nn.BCEWithLogitsLoss(reduction="mean")
+        self.mse_loss = nn.MSELoss(reduction="mean")
+        self.bce_loss = nn.BCEWithLogitsLoss(reduction="mean")
 
-    def loss_fn(self, lbl, y, device):
-        """loss function between true labels lbl and prediction y"""
+    def criterion(self, outputs, labels_onehot_flows):
+        """loss function between true labels and prediction outputs"""
 
-        veci = 5.0 * torch.from_numpy(lbl[:, 2:]).to(device)
-        loss = self.criterion1(y[:, :2], veci)
-        loss /= 2.0
-        loss2 = self.criterion2(
-            y[:, -1], torch.from_numpy(lbl[:, 1] > 0.5).to(device).float()
+        # Cell Recognition Loss
+        cellprob_loss = self.bce_loss(
+            outputs[:, -1],
+            torch.from_numpy(labels_onehot_flows[:, 1] > 0.5).to(self.device).float(),
         )
-        loss = loss + loss2
+
+        # Cell Distinction Loss
+        gradient_flows = 5.0 * torch.from_numpy(labels_onehot_flows[:, 2:]).to(
+            self.device
+        )
+        gradflow_loss = 0.5 * self.mse_loss(outputs[:, :2], gradient_flows)
+
+        loss = cellprob_loss + gradflow_loss
+
         return loss
 
     def _epoch_phase(self, phase):
@@ -75,10 +82,12 @@ class Trainer(BaseTrainer):
                     images_pub, labels_pub = batch_data["img"], batch_data["label"]
 
                 except:
+                    # Assign memory loader if the cycle ends
                     self.public_iterator = iter(self.public_loader)
                     batch_data = next(self.public_iterator)
                     images_pub, labels_pub = batch_data["img"], batch_data["label"]
 
+                # Concat memory data to the batch
                 images = torch.cat([images, images_pub], dim=0)
                 labels = torch.cat([labels, labels_pub], dim=0)
 
@@ -87,21 +96,21 @@ class Trainer(BaseTrainer):
 
             self.optimizer.zero_grad()
 
-            # Map label masks to graidnet and onehot
-            labels_onehot_flows = labels_to_flows(
-                labels, use_gpu=True, device=self.device
-            )
-
             # Forward pass
             with torch.cuda.amp.autocast(enabled=self.amp):
                 with torch.set_grad_enabled(phase == "train"):
-                    # outputs are B x [grad y, grad x, cellprob] x H x W
+                    # Output shape is B x [grad y, grad x, cellprob] x H x W
                     outputs = self._inference(images, phase)
 
-                    # Calculate & dice loss and gradient loss
-                    loss = self.loss_fn(labels_onehot_flows, outputs, self.device)
+                    # Map label masks to graidnet and onehot
+                    labels_onehot_flows = labels_to_flows(
+                        labels, use_gpu=True, device=self.device
+                    )
+                    # Calculate loss
+                    loss = self.criterion(outputs, labels_onehot_flows)
                     self.loss_metric.append(loss)
 
+                    # Calculate valid statistics
                     if phase != "train":
                         outputs, labels = self._post_process(outputs, labels)
                         f1_score = self._get_f1_metric(outputs, labels)
@@ -109,6 +118,7 @@ class Trainer(BaseTrainer):
 
                 # Backward pass
                 if phase == "train":
+                    # For the mixed precision training
                     if self.amp:
                         self.scaler.scale(loss).backward()
                         self.scaler.unscale_(self.optimizer)
@@ -132,6 +142,7 @@ class Trainer(BaseTrainer):
 
     def _inference(self, images, phase="train"):
         """inference methods for different phase"""
+
         if phase != "train":
             outputs = sliding_window_inference(
                 images,
@@ -148,9 +159,12 @@ class Trainer(BaseTrainer):
         return outputs
 
     def _post_process(self, outputs, labels=None):
+        """Predict cell instances using the gradient tracking"""
         outputs = outputs.squeeze(0).cpu().numpy()
-        dP, cellprob = outputs[:2], self._sigmoid(outputs[-1])
-        outputs = compute_masks(dP, cellprob, use_gpu=True, device=self.device)[0]
+        gradflows, cellprob = outputs[:2], self._sigmoid(outputs[-1])
+        outputs = compute_masks(gradflows, cellprob, use_gpu=True, device=self.device)[
+            0
+        ]
 
         if labels is not None:
             labels = labels.squeeze(0).squeeze(0).cpu().numpy()
@@ -158,4 +172,5 @@ class Trainer(BaseTrainer):
         return outputs, labels
 
     def _sigmoid(self, z):
+        """Sigmoid function for numpy arrays"""
         return 1 / (1 + np.exp(-z))

@@ -36,6 +36,8 @@ class Predictor(BasePredictor):
 
     @torch.no_grad()
     def _inference(self, img_data):
+        """Conduct model prediction"""
+
         img_data = img_data.to(self.device)
         img_base = img_data
         outputs_base = self._window_inference(img_base)

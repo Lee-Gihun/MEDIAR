@@ -75,6 +75,7 @@ class Trainer(BaseTrainer):
 
             # Backward pass
             if phase == "train":
+                # For the mixed precision training
                 if self.amp:
                     self.scaler.scale(loss).backward()
                     self.scaler.unscale_(self.optimizer)

@@ -48,7 +48,8 @@
     "pred_setups":{
         "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
         "output_path": "./results/baseline",
-        "make_submission": true
+        "make_submission": true,
+        "algo_params": {}
     },
     "wandb_setups":{
         "project": "CellSeg",
