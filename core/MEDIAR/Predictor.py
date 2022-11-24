@@ -1,6 +1,6 @@
 import torch
-import os, sys
 import numpy as np
+import os, sys
 from monai.inferers import sliding_window_inference
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))

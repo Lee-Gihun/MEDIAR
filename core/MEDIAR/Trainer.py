@@ -1,8 +1,7 @@
-import os
-import sys
 import torch
 import torch.nn as nn
 import numpy as np
+import os, sys
 from tqdm import tqdm
 from monai.inferers import sliding_window_inference
 
