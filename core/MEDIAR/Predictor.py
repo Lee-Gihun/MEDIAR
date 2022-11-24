@@ -71,13 +71,13 @@ class Predictor(BasePredictor):
 
         return pred_mask
 
-    def _window_inference(self, img_data):
+    def _window_inference(self, img_data, aux=False):
         """Inference on RoI-sized window"""
         outputs = sliding_window_inference(
             img_data,
             roi_size=512,
             sw_batch_size=4,
-            predictor=self.model,
+            predictor=self.model if not aux else self.model_aux,
             padding_mode="constant",
             mode="gaussian",
             overlap=0.6,
