@@ -2,6 +2,7 @@ import os, glob
 import json
 import argparse
 
+
 def public_paths_labeled(root):
     images_raw = sorted(glob.glob(os.path.join(root, "Public/images/*")))
     labels_raw = sorted(glob.glob(os.path.join(root, "Public/labels/*")))

@@ -97,7 +97,7 @@ def main(args):
         args.pred_setups.input_path,
         args.pred_setups.output_path,
         args.pred_setups.make_submission,
-        args.pred_setups.algo_params
+        args.pred_setups.algo_params,
     )
 
     # Conduct prediction on validation Set

@@ -13,7 +13,7 @@ def main(args):
 
     model_args = args.pred_setups.model
     model = MODELS[model_args.name](**model_args.params)
-    
+
     weights = torch.load(args.pred_setups.model_path, map_location="cpu")
     model.load_state_dict(weights, strict=False)
 
@@ -24,7 +24,7 @@ def main(args):
         args.pred_setups.output_path,
         args.pred_setups.make_submission,
         args.pred_setups.exp_name,
-        args.pred_setups.algo_params
+        args.pred_setups.algo_params,
     )
 
     _ = predictor.conduct_prediction()
