@@ -29,7 +29,8 @@ class BasePredictor:
         self.exp_name = exp_name
 
         # Assign algoritm-specific arguments
-        self.__dict__.update((k, v) for k, v in algo_params.items())
+        if algo_params is not None:
+            self.__dict__.update((k, v) for k, v in algo_params.items())
 
         # Prepare inference environments
         self._setups()

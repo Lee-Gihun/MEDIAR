@@ -53,7 +53,8 @@ class BaseTrainer:
         self.scaler = torch.cuda.amp.GradScaler() if amp else None
 
         # Assign algoritm-specific arguments
-        self.__dict__.update((k, v) for k, v in algo_params.items())
+        if algo_params is not None:
+            self.__dict__.update((k, v) for k, v in algo_params.items())
 
         # Cumulitive statistics
         self.loss_metric = CumulativeAverage()
