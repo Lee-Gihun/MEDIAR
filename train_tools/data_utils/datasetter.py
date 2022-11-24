@@ -17,7 +17,6 @@ def get_dataloaders_labeled(
     root,
     mapping_file,
     mapping_file_tuning="/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
-    map_keys="all",
     valid_portion=0.0,
     batch_size=8,
     num_workers=5,
@@ -29,7 +28,6 @@ def get_dataloaders_labeled(
     Args:
         root (str): root directory
         mapping_file (str): json file for mapping dataset
-        map_keys (list or str, optional): using dataset names. Defaults to "all".
         valid_portion (float, optional): portion of valid datasets. Defaults to 0.1.
         batch_size (int, optional): batch size. Defaults to 8.
         shuffle (bool, optional): shuffles dataloader. Defaults to True.
@@ -40,7 +38,7 @@ def get_dataloaders_labeled(
     """
 
     # Get list of data dictionaries from decoded paths
-    data_dicts = path_decoder(root, mapping_file, map_keys)
+    data_dicts = path_decoder(root, mapping_file)
     tuning_dicts = path_decoder(root, mapping_file_tuning, no_label=True)
 
     if amplified:
@@ -117,7 +115,6 @@ def get_dataloaders_labeled(
 def get_dataloaders_public(
     root,
     mapping_file,
-    map_keys="all",
     valid_portion=0.0,
     batch_size=8,
     num_workers=5,
@@ -128,7 +125,6 @@ def get_dataloaders_public(
     Args:
         root (str): root directory
         mapping_file (str): json file for mapping dataset
-        map_keys (list or str, optional): using dataset names. Defaults to "all".
         valid_portion (float, optional): portion of valid datasets. Defaults to 0.1.
         batch_size (int, optional): batch size. Defaults to 8.
         shuffle (bool, optional): shuffles dataloader. Defaults to True.
@@ -139,7 +135,7 @@ def get_dataloaders_public(
     """
 
     # Get list of data dictionaries from decoded paths
-    data_dicts = path_decoder(root, mapping_file, map_keys)
+    data_dicts = path_decoder(root, mapping_file)
 
     # Split datasets as Train/Valid
     train_dicts, valid_dicts = split_train_valid(
@@ -167,12 +163,12 @@ def get_dataloaders_public(
 
 
 def get_dataloaders_unlabeled(
-    root, mapping_file, map_keys="all", batch_size=8, shuffle=True, num_workers=5,
+    root, mapping_file, batch_size=8, shuffle=True, num_workers=5,
 ):
     """Set dataloaders for unlabeled dataset."""
     # Get list of data dictionaries from decoded paths
     unlabeled_dicts = path_decoder(
-        root, mapping_file, map_keys, no_label=True, unlabeled=True
+        root, mapping_file, no_label=True, unlabeled=True
     )
 
     # Obtain datasets with transforms
@@ -192,12 +188,12 @@ def get_dataloaders_unlabeled(
 
 
 def get_dataloaders_unlabeled_psuedo(
-    root, mapping_file, map_keys="all", batch_size=8, shuffle=True, num_workers=5,
+    root, mapping_file, batch_size=8, shuffle=True, num_workers=5,
 ):
 
     # Get list of data dictionaries from decoded paths
     unlabeled_psuedo_dicts = path_decoder(
-        root, mapping_file, map_keys, no_label=False, unlabeled=True
+        root, mapping_file, no_label=False, unlabeled=True
     )
 
     # Obtain datasets with transforms

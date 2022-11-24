@@ -33,7 +33,7 @@ def split_train_valid(data_dicts, valid_portion=0.1):
     return train_dicts, valid_dicts
 
 
-def path_decoder(root, mapping_file, map_keys="all", no_label=False, unlabeled=False):
+def path_decoder(root, mapping_file, no_label=False, unlabeled=False):
     """Decode img/label file paths from root & mapping directory.
 
     Args:
@@ -51,11 +51,7 @@ def path_decoder(root, mapping_file, map_keys="all", no_label=False, unlabeled=F
     with open(mapping_file, "r") as file:
         data = json.load(file)
 
-        # Use all keys when "all"
-        if map_keys == "all":
-            map_keys = data.keys()
-
-        for map_key in map_keys:
+        for map_key in data.keys():
 
             # If no_label, assign "img" key only
             if no_label:

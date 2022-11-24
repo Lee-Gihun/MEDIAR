@@ -3,7 +3,6 @@
         "labeled":{
             "root": "/home/gihun/data/CellSeg/",
             "mapping_file": "./train_tools/data_utils/mapping_labeled.json",
-            "map_keys": "all",
             "batch_size": 8, 
             "valid_portion": 0.1
         },
