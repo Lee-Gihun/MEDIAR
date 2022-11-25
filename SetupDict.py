@@ -16,7 +16,7 @@ TRAINER = {
 PREDICTOR = {
     "baseline": core.Baseline.Predictor,
     "mediar": core.MEDIAR.Predictor,
-    "ensemble_mediar": core.MEDIAR.EnsemblePredictor
+    "ensemble_mediar": core.MEDIAR.EnsemblePredictor,
 }
 
 MODELS = {

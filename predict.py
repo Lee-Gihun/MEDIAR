@@ -17,7 +17,7 @@ def main(args):
     if "ensemble" in args.pred_setups.name:
         weights = torch.load(args.pred_setups.model_path1, map_location="cpu")
         model.load_state_dict(weights, strict=False)
-        
+
         model_aux = MODELS[model_args.name](**model_args.params)
         weights_aux = torch.load(args.pred_setups.model_path2, map_location="cpu")
         model_aux.load_state_dict(weights_aux, strict=False)
