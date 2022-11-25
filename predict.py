@@ -14,18 +14,38 @@ def main(args):
     model_args = args.pred_setups.model
     model = MODELS[model_args.name](**model_args.params)
 
-    weights = torch.load(args.pred_setups.model_path, map_location="cpu")
-    model.load_state_dict(weights, strict=False)
+    if "ensemble" in args.pred_setups.name:
+        weights = torch.load(args.pred_setups.model_path1, map_location="cpu")
+        model.load_state_dict(weights, strict=False)
+        
+        model_aux = MODELS[model_args.name](**model_args.params)
+        weights_aux = torch.load(args.pred_setups.model_path2, map_location="cpu")
+        model_aux.load_state_dict(weights_aux, strict=False)
 
-    predictor = PREDICTOR[args.pred_setups.name](
-        model,
-        args.pred_setups.device,
-        args.pred_setups.input_path,
-        args.pred_setups.output_path,
-        args.pred_setups.make_submission,
-        args.pred_setups.exp_name,
-        args.pred_setups.algo_params,
-    )
+        predictor = PREDICTOR[args.pred_setups.name](
+            model,
+            model_aux,
+            args.pred_setups.device,
+            args.pred_setups.input_path,
+            args.pred_setups.output_path,
+            args.pred_setups.make_submission,
+            args.pred_setups.exp_name,
+            args.pred_setups.algo_params,
+        )
+
+    else:
+        weights = torch.load(args.pred_setups.model_path, map_location="cpu")
+        model.load_state_dict(weights, strict=False)
+
+        predictor = PREDICTOR[args.pred_setups.name](
+            model,
+            args.pred_setups.device,
+            args.pred_setups.input_path,
+            args.pred_setups.output_path,
+            args.pred_setups.make_submission,
+            args.pred_setups.exp_name,
+            args.pred_setups.algo_params,
+        )
 
     _ = predictor.conduct_prediction()
 

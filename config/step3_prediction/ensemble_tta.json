@@ -1,6 +1,6 @@
 {
     "pred_setups":{
-        "name": "mediar",
+        "name": "ensemble_mediar",
         "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
         "output_path": "./results/mediar_ensemble_tta",
         "make_submission": true,
