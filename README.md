@@ -130,15 +130,15 @@ wandb off
 Before execute the codes, run the follwing code to generate path mappting json file:
 
 ```python
-python generate_mapping.py --root=<path_to_data>
+python ./generate_mapping.py --root=<path_to_data>
 ```
 
 ## Training
 
 To train the model(s) in the paper, run the following command:
 
-```train
-python main.py --config_path=<path_to_config>
+```python
+python ./main.py --config_path=<path_to_config>
 ```
 Configuration files are in `./config/*`. We provide the pretraining, fine-tuning, and prediction configs. You can refer to the configuration options in the `./config/mediar_example.json`. We also implemented the official challenge baseline code in our framework. You can run the baseline code by running the `./config/baseline.json`.
 
@@ -152,7 +152,8 @@ python predict.py --config_path=<path_to_config>
 
 ## Evaluation
 If you have the labels run the following command for evaluation:
-```
+
+```python
 python ./evaluate.py --pred_path=<path_to_prediciton_results> --gt_path=<path_to_ground_truth_labels>
 ```
 
