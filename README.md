@@ -148,7 +148,7 @@ To conduct prediction on the testing cases, run the following command:
 python predict.py --config_path=<path_to_config>
 ```
 
-## Inference
+## Evaluation
 If you have the labels run the following command for evaluation:
 ```
 python ./evaluate.py --pred_path=<path_to_prediciton_results> --gt_path=<path_to_ground_truth_labels>
