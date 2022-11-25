@@ -78,13 +78,11 @@ MEIDAR is a framework for efficient cell instance segmentation of multi-modality
 | Loss function                                                        | MSE, BCE                              | MSE, BCE                               |
 
 # 4. Results
-
-- Quantitative analysis of cross validation results and/or testing set results
-  - average and standard deviation of evaluation metrics
-  - statistical analysis (e.g., statistical methods, significant levels...)
+- Our MEDIAR achieved **0.9067** validation mean F1-score and **Will Be Updated** test mean F1-score.
 
 - Failure Cases
 <img src="./image/failure_cases.png" width="1200"/>
+
 # 5. Reproducing
 
 ### **Our Environment**
