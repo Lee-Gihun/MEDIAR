@@ -111,6 +111,7 @@ wandb off
 ## Dataset
 - The datasets directories under the root should the following structure:
 
+```
   Root
   ├── Datasets
   │   ├── images (images can have various extensions: .tif, .tiff, .png, .bmp ...)
@@ -124,6 +125,7 @@ wandb off
   │   │    ├── cell_00003.label.tiff
   │   │    ├── ...
   └── ...
+```
 
 Before execute the codes, run the follwing code to generate path mappting json file:
 
