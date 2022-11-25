@@ -5,7 +5,7 @@
         "output_path": "./results/mediar_base_prediction",
         "make_submission": true,
         "model_path": "./weights/finetuned/from_phase1.pth",
-        "device": "cuda:0",
+        "device": "cuda:3",
         "model":{
             "name": "mediar-former",
             "params": {
@@ -17,7 +17,7 @@
                     "classes":3
             }
         },
-        "exp_name": "mediar_base_prediction",
+        "exp_name": "mediar_p1_base",
         "algo_params": {"use_tta": false}
     }
 }
