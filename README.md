@@ -2,7 +2,7 @@
 # **MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy**
 <img src="./image/mediar_results.png" width="1200"/>
 
-This repository provides an official implementation of **"MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy"** [NeurIPS-2022 Weakly Supervised Cell Segmentation in Multi-modality High-Resolution Microscopy Images Challenge](https://neurips22-cellseg.grand-challenge.org/) submission. 
+This repository provides an official implementation of [MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy](https://arxiv.org/abs/2212.03465) [NeurIPS-2022 Weakly Supervised Cell Segmentation in Multi-modality High-Resolution Microscopy Images Challenge](https://neurips22-cellseg.grand-challenge.org/) submission. 
 
 # 1. MEDIAR Overview
 <img src="./image/mediar_framework.png" width="1200"/>
