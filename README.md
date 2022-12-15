@@ -1,6 +1,6 @@
 
 # **MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy**
-<img src="./image/mediar_results.png" width="1200"/>
+![1-2](https://user-images.githubusercontent.com/12638561/207771867-0b1414f2-cf48-4747-9cda-3304e6d86bfd.png)
 
 This repository provides an official implementation of [MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy](https://arxiv.org/abs/2212.03465), which achieved the ***"1st winner"*** in the [NeurIPS-2022 Cell Segmentation Challenge](https://neurips22-cellseg.grand-challenge.org/). 
 
@@ -78,10 +78,19 @@ MEIDAR is a framework for efficient cell instance segmentation of multi-modality
 | Loss function                                                        | MSE, BCE                              | MSE, BCE                               |
 
 # 4. Results
-- Our MEDIAR achieved **0.9067** validation mean F1-score and **Will Be Updated** test mean F1-score.
+### **Validation Dataset**
+- Quantitative Evaluation
+    - Our MEDIAR achieved **0.9067** validation mean F1-score.
+- Qualitative Evaluation
+<img src="./image/mediar_results.png" width="1200"/>
 
 - Failure Cases
 <img src="./image/failure_cases.png" width="1200"/>
+
+### **Test Dataset**
+![F1_osilab](https://user-images.githubusercontent.com/12638561/207772559-2185b79c-8288-4556-a3b4-9bd1d359fceb.png)
+![RunningTime_osilab](https://user-images.githubusercontent.com/12638561/207772555-c3b29071-6e03-4985-837a-da7b3dd3b65d.png)
+
 
 # 5. Reproducing
 
