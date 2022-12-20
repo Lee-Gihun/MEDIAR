@@ -25,7 +25,7 @@ MEIDAR is a framework for efficient cell instance segmentation of multi-modality
 ## **Model-Centric**
 - **MEDIAR-Former Architecture** : MEDIAR-Former follows the design paradigm of U-Net, but use SegFormer and MA-Net for the encoder and decoder. The two heads of MEDIAR-Former predicts cell probability and gradieng flow. 
 
-<img src="./image/mediar_model.png" width="1200"/>
+<img src="./image/mediar_model.PNG" width="1200"/>
 
 - **Gradient Flow Tracking** : We utilize gradient flow tracking proposed by [CellPose](https://github.com/MouseLand/cellpose).
 
