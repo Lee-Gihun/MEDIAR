@@ -2,7 +2,12 @@
 # **MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy**
 ![1-2](https://user-images.githubusercontent.com/12638561/207771867-0b1414f2-cf48-4747-9cda-3304e6d86bfd.png)
 
-This repository provides an official implementation of [MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy](https://arxiv.org/abs/2212.03465), which achieved the ***"1st winner"*** in the [NeurIPS-2022 Cell Segmentation Challenge](https://neurips22-cellseg.grand-challenge.org/). 
+This repository provides an official implementation of [MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy](https://arxiv.org/abs/2212.03465), which achieved the ***"1st winner"*** in the [NeurIPS-2022 Cell Segmentation Challenge](https://neurips22-cellseg.grand-challenge.org/).
+
+To access and try mediar directly, please see links below.
+- [Huggingface Space](https://huggingface.co/spaces/ghlee94/MEDIAR?logs=build)
+- [Napari Plugin](https://github.com/joonkeekim/mediar-napari)
+- [Docker Image](https://hub.docker.com/repository/docker/joonkeekim/mediar/general)
 
 # 1. MEDIAR Overview
 <img src="./image/mediar_framework.png" width="1200"/>
