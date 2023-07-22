@@ -1,7 +1,6 @@
 
 # **MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy**
 ![1-2](https://user-images.githubusercontent.com/12638561/207771867-0b1414f2-cf48-4747-9cda-3304e6d86bfd.png)
-<a href="https://colab.research.google.com/drive/1iFnGu6A_p-5s_eATjNtfjb9-MR5L3pLB?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 
 
 This repository provides an official implementation of [MEDIAR: MEDIAR: Harmony of Data-Centric and Model-Centric for Multi-Modality Microscopy](https://arxiv.org/abs/2212.03465), which achieved the ***"1st winner"*** in the [NeurIPS-2022 Cell Segmentation Challenge](https://neurips22-cellseg.grand-challenge.org/).
@@ -165,6 +164,9 @@ To conduct prediction on the testing cases, run the following command:
 ```python
 python predict.py --config_path=<path_to_config>
 ```
+
+Colab Example: <a href="https://colab.research.google.com/drive/1iFnGu6A_p-5s_eATjNtfjb9-MR5L3pLB?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+
 
 ## Evaluation
 If you have the labels run the following command for evaluation:
