@@ -3,13 +3,13 @@ inplace_abn==1.1.0
 monai==0.9.0
 numba==0.56.2
 numpy==1.22.4
-Pillow==9.3.0
 pretrainedmodels==0.7.4
 pytz==2022.2.1
-scikit_image==0.19.3
+scikit_image==0.19.2
 scipy==1.7.2
 tifffile==2021.11.2
 timm==0.4.12
 torch==1.12.1
 torchvision==0.13.1
 tqdm==4.64.1
+pillow==9.0.1
