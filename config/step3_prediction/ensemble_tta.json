@@ -11,7 +11,6 @@
             "name": "mediar-former",
             "params": {
                     "encoder_name":"mit_b5",        
-                    "encoder_weights":"imagenet",
                     "decoder_channels": [1024, 512, 256, 128, 64],
                     "decoder_pab_channels": 256,
                     "in_channels":3, 
