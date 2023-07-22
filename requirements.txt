@@ -8,7 +8,7 @@ pretrainedmodels==0.7.4
 pytz==2022.2.1
 scikit_image==0.19.3
 scipy==1.7.2
-skimage==0.0
+skimage==0.19.2
 tifffile==2021.11.2
 timm==0.4.12
 torch==1.12.1
