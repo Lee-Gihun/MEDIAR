@@ -17,8 +17,8 @@ def public_paths_labeled(root):
         assert name1 == name2
 
         data_item = {
-            "img": image_path.split("CellSeg/")[-1],
-            "label": label_path.split("CellSeg/")[-1],
+            "img": image_path.split("MEDIAR/")[-1],
+            "label": label_path.split("MEDIAR/")[-1],
         }
 
         data_dicts.append(data_item)
@@ -31,12 +31,11 @@ def public_paths_labeled(root):
 def official_paths_labeled(root):
     """Map paths for official labeled datasets as dictionary list"""
 
-    image_path = os.path.join(root, "Official/Train_Labeled/images/*")
-    label_path = os.path.join(root, "Official/Train_Labeled/labels/*")
+    image_path = os.path.join(root, "Official/Training/images/*")
+    label_path = os.path.join(root, "Official/Training/labels/*")
 
     images_raw = sorted(glob.glob(image_path))
     labels_raw = sorted(glob.glob(label_path))
-
     data_dicts = []
 
     for image_path, label_path in zip(images_raw, labels_raw):
@@ -45,8 +44,8 @@ def official_paths_labeled(root):
         assert name1 == name2
 
         data_item = {
-            "img": image_path.split("CellSeg/")[-1],
-            "label": label_path.split("CellSeg/")[-1],
+            "img": image_path.split("MEDIAR/")[-1],
+            "label": label_path.split("MEDIAR/")[-1],
         }
 
         data_dicts.append(data_item)
@@ -59,13 +58,13 @@ def official_paths_labeled(root):
 def official_paths_tuning(root):
     """Map paths for official tuning datasets as dictionary list"""
 
-    image_path = os.path.join(root, "Official/TuningSet/*")
+    image_path = os.path.join(root, "Official/Tuning/images/*")
     images_raw = sorted(glob.glob(image_path))
 
     data_dicts = []
 
     for image_path in images_raw:
-        data_item = {"img": image_path.split("CellSeg/")[-1]}
+        data_item = {"img": image_path.split("MEDIAR/")[-1]}
         data_dicts.append(data_item)
 
     map_dict = {"official": data_dicts}
