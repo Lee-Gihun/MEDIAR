@@ -1,8 +1,5 @@
 import torch
 import torch.nn as nn
-import os, sys
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.getcwd(), "../../")))
 
 from segmentation_models_pytorch import MAnet
 from segmentation_models_pytorch.base.modules import Activation
@@ -15,14 +12,15 @@ class MEDIARFormer(MAnet):
 
     def __init__(
         self,
-        encoder_name="mit_b5",
-        encoder_weights="imagenet",
-        decoder_channels=(1024, 512, 256, 128, 64),
-        decoder_pab_channels=256,
-        in_channels=3,
-        classes=3,
+        encoder_name="mit_b5",  # Default encoder
+        encoder_weights="imagenet",  # Pre-trained weights
+        decoder_channels=(1024, 512, 256, 128, 64),  # Decoder configuration
+        decoder_pab_channels=256,  # Decoder Pyramid Attention Block channels
+        in_channels=3,  # Number of input channels
+        classes=3,  # Number of output classes
     ):
-        super(MEDIARFormer, self).__init__(
+        # Initialize the MAnet model with provided parameters
+        super().__init__(
             encoder_name=encoder_name,
             encoder_weights=encoder_weights,
             decoder_channels=decoder_channels,
@@ -31,69 +29,74 @@ class MEDIARFormer(MAnet):
             classes=classes,
         )
 
-        # Delete MAnet Head
+        # Remove the default segmentation head as it's not used in this architecture
         self.segmentation_head = None
 
-        # Convert all Encoder/Decoder activations to 0
-        convert_relu_to_mish(self.encoder)
-        convert_relu_to_mish(self.decoder)
+        # Modify all activation functions in the encoder and decoder from ReLU to Mish
+        _convert_activations(self.encoder, nn.ReLU, nn.Mish(inplace=True))
+        _convert_activations(self.decoder, nn.ReLU, nn.Mish(inplace=True))
 
-        self.cellprob_head = DeepSegmantationHead(
-            in_channels=decoder_channels[-1], out_channels=1, kernel_size=3,
+        # Add custom segmentation heads for different segmentation tasks
+        self.cellprob_head = DeepSegmentationHead(
+            in_channels=decoder_channels[-1], out_channels=1
         )
-        self.gradflow_head = DeepSegmantationHead(
-            in_channels=decoder_channels[-1], out_channels=2, kernel_size=3,
+        self.gradflow_head = DeepSegmentationHead(
+            in_channels=decoder_channels[-1], out_channels=2
         )
 
     def forward(self, x):
-        """Sequentially pass `x` trough model`s encoder, decoder and heads"""
+        """Forward pass through the network"""
+        # Ensure the input shape is correct
         self.check_input_shape(x)
 
+        # Encode the input and then decode it
         features = self.encoder(x)
         decoder_output = self.decoder(*features)
 
-        gradflow_mask = self.gradflow_head(decoder_output)
+        # Generate masks for cell probability and gradient flows
         cellprob_mask = self.cellprob_head(decoder_output)
+        gradflow_mask = self.gradflow_head(decoder_output)
 
-        masks = torch.cat([gradflow_mask, cellprob_mask], dim=1)
+        # Concatenate the masks for output
+        masks = torch.cat([cellprob_mask, gradflow_mask], dim=1)
 
         return masks
 
 
-class DeepSegmantationHead(nn.Sequential):
-    """SegmentationHead for Cell Probability & Grad Flows"""
+class DeepSegmentationHead(nn.Sequential):
+    """Custom segmentation head for generating specific masks"""
 
     def __init__(
         self, in_channels, out_channels, kernel_size=3, activation=None, upsampling=1
     ):
-        conv2d_1 = nn.Conv2d(
-            in_channels,
-            in_channels // 2,
-            kernel_size=kernel_size,
-            padding=kernel_size // 2,
-        )
-        bn = nn.BatchNorm2d(in_channels // 2)
-        conv2d_2 = nn.Conv2d(
-            in_channels // 2,
-            out_channels,
-            kernel_size=kernel_size,
-            padding=kernel_size // 2,
-        )
-        mish = nn.Mish(inplace=True)
-
-        upsampling = (
+        # Define a sequence of layers for the segmentation head
+        layers = [
+            nn.Conv2d(
+                in_channels,
+                in_channels // 2,
+                kernel_size=kernel_size,
+                padding=kernel_size // 2,
+            ),
+            nn.Mish(inplace=True),
+            nn.BatchNorm2d(in_channels // 2),
+            nn.Conv2d(
+                in_channels // 2,
+                out_channels,
+                kernel_size=kernel_size,
+                padding=kernel_size // 2,
+            ),
             nn.UpsamplingBilinear2d(scale_factor=upsampling)
             if upsampling > 1
-            else nn.Identity()
-        )
-        activation = Activation(activation)
-        super().__init__(conv2d_1, mish, bn, conv2d_2, upsampling, activation)
+            else nn.Identity(),
+            Activation(activation) if activation else nn.Identity(),
+        ]
+        super().__init__(*layers)
 
 
-def convert_relu_to_mish(model):
-    """Convert ReLU atcivation to Mish"""
-    for child_name, child in model.named_children():
-        if isinstance(child, nn.ReLU):
-            setattr(model, child_name, nn.Mish(inplace=True))
+def _convert_activations(module, from_activation, to_activation):
+    """Recursively convert activation functions in a module"""
+    for name, child in module.named_children():
+        if isinstance(child, from_activation):
+            setattr(module, name, to_activation)
         else:
-            convert_relu_to_mish(child)
+            _convert_activations(child, from_activation, to_activation)
