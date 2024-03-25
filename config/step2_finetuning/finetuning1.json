@@ -1,17 +1,17 @@
 {
     "data_setups":{
         "labeled":{
-            "root": "/home/gihun/data/CellSeg/",
+            "root": "/home/gihun/MEDIAR/",
             "mapping_file": "./train_tools/data_utils/mapping_labeled.json",
-            "mapping_file_tuning": "/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
+            "mapping_file_tuning": "/home/gihun/MEDIAR/train_tools/data_utils/mapping_tuning.json",
             "amplified": true,
             "batch_size": 8, 
             "valid_portion": 0.0
         },
         "public":{
-            "enabled": true,
+            "enabled": false,
             "params":{
-                "root": "/home/gihun/data/CellSeg/",
+                "root": "/home/gihun/MEDIAR/",
                 "mapping_file": "./train_tools/data_utils/mapping_public.json",
                 "batch_size": 1
             }
@@ -35,9 +35,9 @@
             "params": {            
                 "num_epochs": 200,
                 "valid_frequency": 1,
-                "device": "cuda:0",
+                "device": "cuda:7",
                 "amp": true,
-                "algo_params": {"with_public": true}
+                "algo_params": {"with_public": false}
             }
         },
         "optimizer":{
@@ -52,7 +52,7 @@
         "seed": 19940817
     },
     "pred_setups":{
-        "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
+        "input_path":"/home/gihun/MEDIAR/data/Official/Tuning/images",
         "output_path": "./results/",
         "make_submission": true,
         "exp_name": "mediar_from_phase1",

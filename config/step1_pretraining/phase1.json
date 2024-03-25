@@ -1,9 +1,9 @@
 {
     "data_setups":{
         "labeled":{
-            "root": "/home/gihun/data/CellSeg/",
+            "root": "/home/gihun/MEDIAR/",
             "mapping_file": "./train_tools/data_utils/mapping_public.json",
-            "mapping_file_tuning": "/home/gihun/CellSeg/train_tools/data_utils/mapping_tuning.json",
+            "mapping_file_tuning": "/home/gihun/MEDIAR/train_tools/data_utils/mapping_tuning.json",
             "batch_size": 9, 
             "valid_portion": 0
         },
@@ -43,7 +43,7 @@
         "seed": 19940817
     },
     "pred_setups":{
-        "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
+        "input_path":"/home/gihun/MEDIAR/data/Official/Tuning/images",
         "output_path": "./mediar_pretrained_phase1",
         "make_submission": false
     },
