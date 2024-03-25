@@ -1,5 +1,6 @@
-from monai.transforms import *
 from .custom import *
+
+from monai.transforms import *
 
 __all__ = [
     "train_transforms",
@@ -19,7 +20,7 @@ train_transforms = Compose(
             channel_wise=False,
             percentiles=[0.0, 99.5],
         ),
-        AsChannelFirstd(keys=["img", "label"], channel_dim=-1),
+        EnsureChannelFirstd(keys=["img", "label"], channel_dim=-1),
         RemoveRepeatedChanneld(keys=["label"], repeats=3),  # label: (H, W)
         ScaleIntensityd(keys=["img"], allow_missing_keys=True),  # Do not scale label
         # >>> Spatial transforms
@@ -57,7 +58,7 @@ public_transforms = Compose(
             channel_wise=False,
             percentiles=[0.0, 99.5],
         ),
-        AsChannelFirstd(keys=["img", "label"], channel_dim=-1),
+        EnsureChannelFirstd(keys=["img", "label"], channel_dim=-1),
         RemoveRepeatedChanneld(keys=["label"], repeats=3),  # label: (H, W)
         ScaleIntensityd(keys=["img"], allow_missing_keys=True),  # Do not scale label
         # >>> Spatial transforms
@@ -79,7 +80,7 @@ valid_transforms = Compose(
             channel_wise=False,
             percentiles=[0.0, 99.5],
         ),
-        AsChannelFirstd(keys=["img", "label"], allow_missing_keys=True, channel_dim=-1),
+        EnsureChannelFirstd(keys=["img", "label"], allow_missing_keys=True, channel_dim=-1),
         RemoveRepeatedChanneld(keys=["label"], repeats=3),
         ScaleIntensityd(keys=["img"], allow_missing_keys=True),
         EnsureTyped(keys=["img", "label"], allow_missing_keys=True),
@@ -95,7 +96,7 @@ tuning_transforms = Compose(
             channel_wise=False,
             percentiles=[0.0, 99.5],
         ),
-        AsChannelFirstd(keys=["img"], channel_dim=-1),
+        EnsureChannelFirstd(keys=["img"], channel_dim=-1),
         ScaleIntensityd(keys=["img"]),
         EnsureTyped(keys=["img"]),
     ]
@@ -111,7 +112,7 @@ unlabeled_transforms = Compose(
             channel_wise=False,
             percentiles=[0.0, 99.5],
         ),
-        AsChannelFirstd(keys=["img"], channel_dim=-1),
+        EnsureChannelFirstd(keys=["img"], channel_dim=-1),
         RandZoomd(
             keys=["img"],
             prob=0.5,
@@ -136,7 +137,7 @@ def get_pred_transforms():
             # >>> Load and refine data
             CustomLoadImage(image_only=True),
             CustomNormalizeImage(channel_wise=False, percentiles=[0.0, 99.5]),
-            AsChannelFirst(channel_dim=-1),  # image: (3, H, W)
+            EnsureChannelFirst(channel_dim=-1),  # image: (3, H, W)
             ScaleIntensity(),
             EnsureType(data_type="tensor"),
         ]
