@@ -86,7 +86,7 @@ def compute_masks(
 
         # calculate masks
         mask = get_masks(p, iscell=cp_mask)
-
+        
         # flow thresholding factored out of get_masks
         shape0 = p.shape[1:]
         if mask.max() > 0 and flow_threshold is not None and flow_threshold > 0:

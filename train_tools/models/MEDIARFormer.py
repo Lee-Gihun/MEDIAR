@@ -58,7 +58,7 @@ class MEDIARFormer(MAnet):
         gradflow_mask = self.gradflow_head(decoder_output)
 
         # Concatenate the masks for output
-        masks = torch.cat([cellprob_mask, gradflow_mask], dim=1)
+        masks = torch.cat([gradflow_mask, cellprob_mask], dim=1)
 
         return masks
 

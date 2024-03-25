@@ -1,7 +1,7 @@
 {
     "pred_setups":{
         "name": "ensemble_mediar",
-        "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
+        "input_path":"/home/gihun/MEDIAR/data/Official/Tuning/images",
         "output_path": "./results/mediar_ensemble_tta",
         "make_submission": true,
         "model_path1": "./weights/finetuned/from_phase1.pth",

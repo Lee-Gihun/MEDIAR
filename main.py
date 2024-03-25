@@ -119,11 +119,7 @@ if __name__ == "__main__":
     opt = ConfLoader(args.config_path).opt
 
     # Print configuration dictionary pretty
-    print("")
-    print("=" * 50 + " Configuration " + "=" * 50)
-    pp = pprint.PrettyPrinter(compact=True)
-    pp.pprint(opt)
-    print("=" * 120)
+    pprint_config(opt)
 
     # Run experiment
     main(opt)

@@ -1,8 +1,9 @@
 import torch
 import numpy as np
 import os, json, random
+from pprint import pprint
 
-__all__ = ["ConfLoader", "directory_setter", "random_seeder"]
+__all__ = ["ConfLoader", "directory_setter", "random_seeder", "pprint_config"]
 
 
 class ConfLoader:
@@ -62,3 +63,8 @@ def random_seeder(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
+def pprint_config(opt):
+    print("\n" + "=" * 50 + " Configuration " + "=" * 50)
+    pprint(opt, compact=True)
+    print("=" * 115 + "\n")

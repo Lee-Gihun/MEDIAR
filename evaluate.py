@@ -7,7 +7,6 @@ from collections import OrderedDict
 from tqdm import tqdm
 
 from train_tools.measures import evaluate_f1_score_cellseg
-from train_tools.utils import ConfLoader
 
 
 def main():

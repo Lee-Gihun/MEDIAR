@@ -1,20 +1,14 @@
 {
     "pred_setups":{
         "name": "mediar",
-        "input_path":"/home/gihun/data/CellSeg/Official/TuningSet",
+        "input_path":"/home/gihun/MEDIAR/data/Official/Tuning/images",
         "output_path": "./results/mediar_base_prediction",
         "make_submission": true,
         "model_path": "./weights/finetuned/from_phase1.pth",
-        "device": "cuda:3",
+        "device": "cuda:7",
         "model":{
             "name": "mediar-former",
-            "params": {
-                    "encoder_name":"mit_b5",        
-                    "decoder_channels": [1024, 512, 256, 128, 64],
-                    "decoder_pab_channels": 256,
-                    "in_channels":3, 
-                    "classes":3
-            }
+            "params": {}
         },
         "exp_name": "mediar_p1_base",
         "algo_params": {"use_tta": false}

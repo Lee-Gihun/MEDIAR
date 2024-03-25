@@ -63,12 +63,8 @@ if __name__ == "__main__":
     # Load configuration from .json file
     opt = ConfLoader(args.config_path).opt
 
-    # Print configuration dictionary pretty
-    print("")
-    print("=" * 50 + " Configuration " + "=" * 50)
-    pp = pprint.PrettyPrinter(compact=True)
-    pp.pprint(opt)
-    print("=" * 120)
+   # Print configuration dictionary pretty
+    pprint_config(opt)
 
     # Run experiment
     main(opt)
