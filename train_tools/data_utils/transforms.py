@@ -13,7 +13,7 @@ __all__ = [
 train_transforms = Compose(
     [
         # >>> Load and refine data --- img: (H, W, 3); label: (H, W)
-        CustomLoadImaged(keys=["img", "label"]),
+        CustomLoadImaged(keys=["img", "label"], image_only=True),
         CustomNormalizeImaged(
             keys=["img"],
             allow_missing_keys=True,
@@ -50,7 +50,7 @@ train_transforms = Compose(
 
 public_transforms = Compose(
     [
-        CustomLoadImaged(keys=["img", "label"]),
+        CustomLoadImaged(keys=["img", "label"], image_only=True),
         BoundaryExclusion(keys=["label"]),
         CustomNormalizeImaged(
             keys=["img"],
@@ -66,6 +66,8 @@ public_transforms = Compose(
         RandSpatialCropd(keys=["img", "label"], roi_size=512, random_size=False),
         RandAxisFlipd(keys=["img", "label"], prob=0.5),
         RandRotate90d(keys=["img", "label"], prob=0.5, spatial_axes=[0, 1]),
+        Rotate90d(k=1, keys=["label"], spatial_axes=(0, 1)),
+        Flipd(keys=["label"], spatial_axis=0),
         EnsureTyped(keys=["img", "label"]),
     ]
 )
@@ -73,7 +75,7 @@ public_transforms = Compose(
 
 valid_transforms = Compose(
     [
-        CustomLoadImaged(keys=["img", "label"], allow_missing_keys=True),
+        CustomLoadImaged(keys=["img", "label"], allow_missing_keys=True, image_only=True),
         CustomNormalizeImaged(
             keys=["img"],
             allow_missing_keys=True,
@@ -89,7 +91,7 @@ valid_transforms = Compose(
 
 tuning_transforms = Compose(
     [
-        CustomLoadImaged(keys=["img"]),
+        CustomLoadImaged(keys=["img"], image_only=True),
         CustomNormalizeImaged(
             keys=["img"],
             allow_missing_keys=True,
@@ -105,7 +107,7 @@ tuning_transforms = Compose(
 unlabeled_transforms = Compose(
     [
         # >>> Load and refine data --- img: (H, W, 3); label: (H, W)
-        CustomLoadImaged(keys=["img"]),
+        CustomLoadImaged(keys=["img"], image_only=True),
         CustomNormalizeImaged(
             keys=["img"],
             allow_missing_keys=True,

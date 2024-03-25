@@ -49,7 +49,7 @@ class CustomLoadImage(LoadImage):
         )
 
         # Adding TIFFReader. Although ITK Reader supports ".tiff" files, sometimes fails to load images.
-        del self.readers[0]
+        self.readers = []
         self.register(UnifiedITKReader(*args, **kwargs))
 
 
@@ -123,7 +123,7 @@ class UnifiedITKReader(NumpyReader):
     def verify_suffix(self, filename: Union[Sequence[PathLike], PathLike]) -> bool:
         """Verify whether the file format is supported by TIFF Reader."""
 
-        suffixes: Sequence[str] = ["tif", "tiff"]
+        suffixes: Sequence[str] = ["tif", "tiff", "png", "jpg", "bmp", "jpeg",]
         return has_itk or is_supported_format(filename, suffixes)
 
     def read(self, data: Union[Sequence[PathLike], PathLike], **kwargs):
