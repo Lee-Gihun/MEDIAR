@@ -10,3 +10,5 @@ tifffile==2023.4.12
 torch==2.1.2
 tqdm==4.65.0
 wandb==0.16.2
+scikit-image
+matplotlib
