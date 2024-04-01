@@ -1,7 +1,8 @@
 """
-Adapted from the following references:
-[1] https://github.com/MouseLand/cellpose/blob/main/cellpose/utils.py
+Copyright © 2022 Howard Hughes Medical Institute, Authored by Carsen Stringer and Marius Pachitariu.
 
+Adapted from the following code:
+[1] https://github.com/MouseLand/cellpose/blob/main/cellpose/utils.py
 """
 
 import torch
