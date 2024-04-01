@@ -3,6 +3,8 @@ Copyright © 2022 Howard Hughes Medical Institute, Authored by Carsen Stringer a
 
 Adapted from the following code:
 [1] https://github.com/MouseLand/cellpose/blob/main/cellpose/utils.py
+[2] https://github.com/MouseLand/cellpose/blob/main/cellpose/dynamics.py
+[3] https://github.com/MouseLand/cellpose/blob/main/cellpose/metrics.py
 """
 
 import torch
