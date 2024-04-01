@@ -177,3 +177,13 @@ You can download MEDIAR pretrained and finetuned models here:
 
 - [Google Drive Link](https://drive.google.com/drive/folders/1RgMxHIT7WsKNjir3wXSl7BrzlpS05S18?usp=share_link). 
 
+## Citation of this Work
+```
+@article{lee2022mediar,
+  title={Mediar: Harmony of data-centric and model-centric for multi-modality microscopy},
+  author={Lee, Gihun and Kim, SangMook and Kim, Joonkee and Yun, Se-Young},
+  journal={arXiv preprint arXiv:2212.03465},
+  year={2022}
+}
+```
+
